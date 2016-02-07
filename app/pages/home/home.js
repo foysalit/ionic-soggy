@@ -1,5 +1,5 @@
 import {Page, Storage, LocalStorage} from 'ionic/ionic';
-import {Http} from 'angular2/http';
+import {Http, URLSearchParams} from 'angular2/http';
 
 
 @Page({
@@ -19,16 +19,33 @@ export class Home {
 		this.storage.get('config').then((config) => {
 			let config = JSON.parse(config);
 
-			let url = "http://questure.poliziadistato.it/stranieri/?mime=1&lang="+ config.language +"&pratica="+ config.receipt;
-			this.http.get(url).subscribe((res:Response) => this.processResponse(res));
-
-			this.status = this.statuses().FETCHED;
-			this.result = 'Processing';
+			let url = "http://soggiorno.herokuapp.com/";
+	        
+	        let params: URLSearchParams = new URLSearchParams();
+		    params.set('receipt', config.receipt);
+		    params.set('language', config.language);
+			
+			this.http.get(url, {
+	            search: params
+	        }).subscribe(
+	        	(res) => this.processResponse(res.json()),
+	        	(error) => this.processError(error)
+	        );
 		});
 	}
 
 	processResponse(res) {
-		console.log(res);
+		if (!res.error) {
+			this.status = this.statuses().FETCHED;
+			this.result = res.data;
+		} else {
+			this.status = this.statuses().ERROR;
+			this.result = res.error;
+		}
+	}
+
+	processError(error) {
+		console.log('Error!', error);
 	}
 
 	statuses() {

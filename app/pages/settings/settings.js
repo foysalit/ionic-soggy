@@ -16,6 +16,9 @@ export class Settings {
   	this.storage = new Storage(LocalStorage);
 
   	this.storage.get('config').then((config) => {
+      if (!config)
+        return;
+      
   		let config = JSON.parse(config);
   		this.config = config;
   	});

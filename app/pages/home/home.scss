@@ -5,4 +5,13 @@
 	p {
 		text-align: center;
 	}
+
+	.result {
+		color: map-get($colors, secondary);
+	}
+
+	.error {
+		color: map-get($colors, danger);
+		font-size: 18px;
+	}
 }

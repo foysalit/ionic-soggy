@@ -13,7 +13,8 @@
         Hang tight, We are fetching the status!
       </p>
 
-      <p *ngIf="status == statuses().FETCHED">{{ result }}</p>
+      <p *ngIf="status == statuses().FETCHED" class="result">{{ result }}</p>
+      <p *ngIf="status == statuses().ERROR" class="error">{{ result }}</p>
     </ion-card-content>
   </ion-card>
   <button 
