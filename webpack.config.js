@@ -46,6 +46,7 @@ module.exports = {
     alias: {
       'angular2': path.resolve('node_modules/angular2'),
       'ionic': 'ionic-framework',
+      'localstorage': path.normalize('angular-local-storage/dist/angular-local-storage.min'),
       'web-animations.min': path.normalize('ionic-framework/js/web-animations.min')
     },
     extensions: ['', '.js']
