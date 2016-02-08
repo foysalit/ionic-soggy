@@ -16,5 +16,11 @@
     "typescript": "1.7.5"
   },
   "name": "soggiorno",
-  "description": "soggiorno: An Ionic project"
+  "description": "soggiorno: An Ionic project",
+  "cordovaPlugins": [
+    "ionic-plugin-deploy"
+  ],
+  "cordovaPlatforms": [
+    "android"
+  ]
 }

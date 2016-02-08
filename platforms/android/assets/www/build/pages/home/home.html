@@ -1,0 +1,26 @@
+<ion-navbar *navbar>
+  <ion-title>Home</ion-title>
+</ion-navbar>
+
+<ion-content padding class="home-page">
+  <ion-card>
+    <ion-card-content>
+      <p *ngIf="status == statuses().NOT_FETCHED">Press the button below to get the status.</p>
+
+      <p *ngIf="status == statuses().FETCHING">
+        <ion-icon name="cube"></ion-icon>
+        <br>
+        Hang tight, We are fetching the status!
+      </p>
+
+      <p *ngIf="status == statuses().FETCHED" class="result">{{ result }}</p>
+      <p *ngIf="status == statuses().ERROR" class="error">{{ result }}</p>
+    </ion-card-content>
+  </ion-card>
+  <button 
+    block 
+    [disabled]="status == statuses().FETCHING" 
+    (click)="getStatus()">
+      Get Status
+  </button>
+</ion-content>
