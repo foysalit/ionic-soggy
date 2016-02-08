@@ -21,7 +21,17 @@
 	    </ion-select>
 	  </ion-item>
 
-  </ion-list>
+	  <ion-item>
+	    <ion-label>Keep History</ion-label>
+	    <ion-toggle 
+	      [(ngModel)]="config.history" 
+	      checked="config.history">
+	    </ion-toggle>
+	  </ion-item>
 
-  <button block (click)="save()"> Save </button>
+  </ion-list>
+  
+  <div padding>
+    <button block (click)="save()"> Save </button>
+  </div>
 </ion-content>

@@ -18,6 +18,8 @@ dist/
 node_modules/
 tmp/
 temp/
+platforms/
+plugins/
 www/build/
 $RECYCLE.BIN/
 

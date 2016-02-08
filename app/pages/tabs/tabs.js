@@ -1,6 +1,7 @@
 import {Page} from 'ionic/ionic';
 import {Home} from '../home/home';
 import {Settings} from '../settings/settings';
+import {History} from '../history/history';
 
 
 @Page({
@@ -12,5 +13,6 @@ export class TabsPage {
     // should be each tab's root Page
     this.tab1Root = Home;
     this.tab2Root = Settings;
+    this.tab3Root = History;
   }
 }

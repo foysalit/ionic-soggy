@@ -1,4 +1,4 @@
-import {Page, Storage, LocalStorage} from 'ionic/ionic';
+import {Page, Storage, LocalStorage, SqlStorage} from 'ionic/ionic';
 import {Http, URLSearchParams} from 'angular2/http';
 
 
@@ -11,27 +11,28 @@ export class Home {
 		this.status = this.statuses().NOT_FETCHED;
 		this.storage = new Storage(LocalStorage);
 		this.http = http;
+		this.config = {};
+		this.storage.get('config').then((config) => {
+			this.config = JSON.parse(config);
+		});
 	}
 
 	getStatus() {
 		this.status = this.statuses().FETCHING;
 
-		this.storage.get('config').then((config) => {
-			let config = JSON.parse(config);
-
-			let url = "http://soggiorno.herokuapp.com/";
-	        
-	        let params: URLSearchParams = new URLSearchParams();
-		    params.set('receipt', config.receipt);
-		    params.set('language', config.language);
-			
-			this.http.get(url, {
-	            search: params
-	        }).subscribe(
-	        	(res) => this.processResponse(res.json()),
-	        	(error) => this.processError(error)
-	        );
-		});
+		 
+		let url = "http://soggiorno.herokuapp.com/";
+        
+        let params: URLSearchParams = new URLSearchParams();
+	    params.set('receipt', this.config.receipt);
+	    params.set('language', this.config.language);
+		
+		this.http.get(url, {
+            search: params
+        }).subscribe(
+        	(res) => this.processResponse(res.json()),
+        	(error) => this.processError(error)
+        );
 	}
 
 	processResponse(res) {
@@ -42,6 +43,11 @@ export class Home {
 			this.status = this.statuses().ERROR;
 			this.result = res.error;
 		}
+
+		if (this.config.history)
+			this.archiveInHistory(this.result, this.config.receipt);
+
+		return true;
 	}
 
 	processError(error) {
@@ -55,5 +61,13 @@ export class Home {
 			FETCHED: 2,
 			ERROR: 3
 		};
+	}
+
+	archiveInHistory(result, receipt) {
+		let historyStorage = new Storage(SqlStorage);
+		let query = 'insert into history(result, receipt, time) values("'+ result +'", "'+ receipt +'", "'+ Date().toString() +'")';
+		historyStorage.query(query).catch((err) => {
+			console.log('error archiving history', err);
+		});
 	}
 }

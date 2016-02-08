@@ -1,4 +1,4 @@
-import {Page, Storage, LocalStorage, NavController} from 'ionic/ionic';
+import {Page, Storage, LocalStorage, SqlStorage, NavController, Alert} from 'ionic/ionic';
 import {Home} from '../home/home';
 
 
@@ -10,7 +10,8 @@ export class Settings {
   	this.nav = nav;
   	this.config = {
   		receipt: '',
-  		language: ''
+  		language: '',
+      history: false
   	};
 
   	this.storage = new Storage(LocalStorage);
@@ -25,8 +26,27 @@ export class Settings {
   }
 
   save() {
+    if (this.config.history) {
+      try {
+        let historyStorage = new Storage(SqlStorage);
+        let query = "CREATE TABLE IF NOT EXISTS history (id INTEGER PRIMARY KEY ASC, result TEXT, receipt TEXT, time TEXT)";
+        historyStorage.query(query).catch((err) => {
+          console.log('error creating db', err);
+        });
+      } catch (err) {
+          let alert = Alert.create({
+            title: 'History Storage Error',
+            subTitle: 'Error history storage is not supported by your device',
+            buttons: ['Dismiss']
+          });
+          this.nav.present(alert);
+          this.config.history = false;
+      }
+    }
+
   	this.storage.set('config', JSON.stringify(this.config)).then(() => {
-  		this.nav.push(Home);
+  		// console.log(this.config);
+      this.nav.push(Home);
   	});
   }
 }
