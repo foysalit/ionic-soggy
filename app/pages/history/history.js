@@ -8,20 +8,46 @@ import {Home} from '../home/home';
 export class History {
   constructor(nav: NavController) {
   	this.nav = nav;
-    this.data = [];
 
+    this.setStorage();
+
+    this.getArchive();
+  }
+
+  setStorage() {
     try {
-    	this.storage = new Storage(SqlStorage);
-      this.storage.query('select * from history').then((results) => {
-        let rows = results.res.rows;
-        for (var i = 0; i < rows.length; i++) {
-          let entry = rows.item(i);
-          entry.time = new Date(entry.time);
-          this.data.push(entry);
-        };
-      });
+      if (!this.storage)
+        this.storage = new Storage(SqlStorage);
     } catch (err) {
       console.log(err);
     }
+  }
+
+  getArchive() {
+
+    this.data = [];
+    this.total = 0;
+
+    this.storage.query('select COUNT(*) as total from history').then((result) => {
+      if (result.res.rows.length > 0)
+        this.total = result.res.rows[0].total;
+    });
+
+    this.storage.query('select * from history').then((results) => {
+      let rows = results.res.rows;
+      for (var i = 0; i < rows.length; i++) {
+        let entry = rows.item(i);
+        entry.time = new Date(entry.time);
+        this.data.push(entry);
+      };
+    });
+  }
+
+  wipeArchive() {
+    this.storage.query('delete from history').then((result) => {
+      this.data = [];
+      this.total = 0;
+      console.log(result);
+    });
   }
 }

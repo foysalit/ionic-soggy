@@ -18,7 +18,8 @@
   "name": "soggiorno",
   "description": "soggiorno: An Ionic project",
   "cordovaPlugins": [
-    "ionic-plugin-deploy"
+    "ionic-plugin-deploy",
+    "cordova-plugin-whitelist"
   ],
   "cordovaPlatforms": [
     "android"

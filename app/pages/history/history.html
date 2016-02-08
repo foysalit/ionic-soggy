@@ -2,9 +2,22 @@
   <ion-title>
     History
   </ion-title>
+
+  <ion-buttons end>
+    <button primary>
+  		<ion-badge>{{ total }}</ion-badge>
+    </button>
+    <button danger (click)="wipeArchive()">
+	    <ion-icon name="trash"></ion-icon>
+    </button>
+    <button secondary (click)="getArchive()">
+	    <ion-icon name="refresh"></ion-icon>
+    </button>
+  </ion-buttons>
 </ion-navbar>
 
 <ion-content class="history-page">
+
   <ion-list>
 	<ion-item *ngFor="#item of data">
       <ion-badge>{{ item.receipt }}</ion-badge><br>
