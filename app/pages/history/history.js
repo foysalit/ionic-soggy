@@ -23,6 +23,10 @@ export class History {
     }
   }
 
+  sortArchiveByLatest(prev, next) {
+    return ((prev.id > next.id) ? -1 : ((prev.id < next.id) ? 1 : 0))
+  }
+
   getArchive() {
 
     this.data = [];
@@ -33,13 +37,15 @@ export class History {
         this.total = result.res.rows[0].total;
     });
 
+    var data = [];
     this.storage.query('select * from history').then((results) => {
       let rows = results.res.rows;
       for (var i = 0; i < rows.length; i++) {
         let entry = rows.item(i);
         entry.time = new Date(entry.time);
-        this.data.push(entry);
+        data.push(entry);
       };
+      this.data = data.sort(this.sortArchiveByLatest);
     });
   }
 

@@ -16,7 +16,7 @@
     "typescript": "1.7.5"
   },
   "name": "soggiorno",
-  "description": "soggiorno: An Ionic project",
+  "description": "Renewal status checker for your Permesso Di Soggiorno",
   "cordovaPlugins": [
     "ionic-plugin-deploy",
     "cordova-plugin-whitelist"
